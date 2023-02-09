@@ -10,6 +10,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
         public static string usr_input = "";
         static void Main(string[] args)
         {
+
             //var secondWord = str.Split(' ').Skip(1).FirstOrDefault();
             Console.WriteLine("ItzPowerTerm v0.1 by DINKONDBD (dinkondbd.github.io)");
             string usr_input = "";
@@ -25,7 +26,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
 
             switch(usr_input.Split(' ').FirstOrDefault().ToLower())
             {
-                default: Console.WriteLine("Command " + usr_input + " is not exists"); break;
+                default: if(usr_input != "") Console.WriteLine("Command " + usr_input + " is not exists"); break;
 
                 case "calc":
                     try
@@ -55,8 +56,59 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                     }
                     
                     break;
+                case "ls":
+                    try
+                    {
+                        if (usr_input.Split(' ').Skip(1).FirstOrDefault() == "-a")
+                        {
+                            DirectorySearch(usr_input.Split(' ').Skip(2).FirstOrDefault());
+                        }
+                        else if (usr_input.Split(' ').Skip(1).FirstOrDefault() == "-s")
+                        {
+                            if (usr_input.Split(' ').Skip(2).FirstOrDefault() == "" || usr_input.Split(' ').Skip(2).FirstOrDefault() == null)
+                            {
+                                Console.WriteLine("Type path to list all sub folders");
+                            }
+                            else
+                            {
+                                string[] fileArray = Directory.GetDirectories(usr_input.Split(' ').Skip(2).FirstOrDefault());
+
+                                for (int i = 0; i < fileArray.Length; i++)
+                                {
+
+                                    Console.WriteLine(fileArray[i]);
+                                }
+                            }
+
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("error was occured");
+                    }
+
+                    break;
             }   
             term_history += DateTime.Now.ToString("h:mm:ss tt")+ " " + usr_input + "\n";
+        }
+        public static void DirectorySearch(string dir)
+        {
+            try
+            {
+                foreach (string f in Directory.GetFiles(dir))
+                {
+                    Console.WriteLine(Path.GetFileName(f));
+                }
+                foreach (string d in Directory.GetDirectories(dir))
+                {
+                    Console.WriteLine(Path.GetFileName(d));
+                    DirectorySearch(d);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }
