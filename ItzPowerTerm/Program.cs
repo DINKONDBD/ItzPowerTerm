@@ -27,6 +27,21 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
             switch(input.Split(' ').FirstOrDefault().ToLower())
             {
                 default: if(input != "") Console.WriteLine("Command " + input + " is not exists"); break;
+                case "help":
+                    try
+                    {
+                        Console.WriteLine("Commands:" +
+                            "\n calc - Shows output evaluation of argument [1 args]" +
+                            "\n clear - clears console [0 args]" +
+                            "\n history - show current terminal session history [0 args]" +
+                            "\n ls - shows subfolders or all files [2 args] arg -s show all subfolders -a shows all files (requires to type path) (example ls -a C:/) " +
+                            "\n start - starts file or program from argument [1 args]");
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
+                    break;
 
                 case "calc":
                     try
@@ -34,9 +49,19 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                         var result = new Expression(input.Split(' ').Skip(1).FirstOrDefault()).Evaluate();
                         Console.WriteLine(result);
                     }
-                    catch
+                    catch (System.Exception ex)
                     {
-                        Console.WriteLine("error was occured");
+                        Console.WriteLine(ex.Message);
+                    }
+                break;
+                case "clear":
+                    try
+                    {
+                        Console.Clear();
+                    }
+                    catch (System.Exception ex)
+                    {
+                        Console.WriteLine(ex.Message);
                     }
 
                     break;
@@ -50,11 +75,11 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                     {
                         System.Diagnostics.Process.Start(input.Split(' ').Skip(1).FirstOrDefault());
                     }
-                    catch
+                    catch (System.Exception ex)
                     {
-                        Console.WriteLine("error was occured");
+                        Console.WriteLine(ex.Message);
                     }
-                    
+
                     break;
                 case "ls":
                     try
@@ -86,9 +111,9 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                             Console.WriteLine("parameter " + input.Split(' ').Skip(2).FirstOrDefault() + " was not found");
                         }
                     }
-                    catch
+                    catch (System.Exception ex)
                     {
-                        Console.WriteLine("error was occured");
+                        Console.WriteLine(ex.Message);
                     }
 
                     break;
