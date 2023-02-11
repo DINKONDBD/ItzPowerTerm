@@ -33,7 +33,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                         Console.WriteLine("Commands:" +
                             "\n calc - Shows output evaluation of argument [1 args]" +
                             "\n clear - clears console [0 args]" +
-                            "\n history - show current terminal session history [0 args]" +
+                            "\n history - shows current terminal session history [0 args]" +
                             "\n ls - shows subfolders or all files [2 args] arg -s show all subfolders -a shows all files (requires to type path) (example ls -a C:/) " +
                             "\n start - starts file or program from argument [1 args]");
                     }
