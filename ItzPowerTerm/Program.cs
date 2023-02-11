@@ -86,7 +86,15 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                     {
                         if (input.Split(' ').Skip(1).FirstOrDefault() == "-a")
                         {
-                            DirectorySearch(input.Split(' ').Skip(2).FirstOrDefault());
+                            if (input.Split(' ').Skip(2).FirstOrDefault() == "" || input.Split(' ').Skip(2).FirstOrDefault() == null)
+                            {
+                                Console.WriteLine("Type path to list all files");
+                            }
+                            else
+                            {
+                                DirectorySearch(input.Split(' ').Skip(2).FirstOrDefault());
+                            }
+                            
                         }
                         else if (input.Split(' ').Skip(1).FirstOrDefault() == "-s")
                         {
@@ -108,7 +116,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                         }
                         else
                         {
-                            Console.WriteLine("parameter " + input.Split(' ').Skip(2).FirstOrDefault() + " was not found");
+                            Console.WriteLine("parameter " + input.Split(' ').Skip(1).FirstOrDefault() + " was not found");
                         }
                     }
                     catch (System.Exception ex)
