@@ -7,7 +7,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
     internal class Program
     {
         public static string term_history = "";
-        public static string usr_input = "";
+        public static string input = "";
         static void Main(string[] args)
         {
 
@@ -22,16 +22,16 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
         static void Term()
         {
             Console.Write(">>");
-            usr_input = Console.ReadLine();
+            input = Console.ReadLine();
 
-            switch(usr_input.Split(' ').FirstOrDefault().ToLower())
+            switch(input.Split(' ').FirstOrDefault().ToLower())
             {
-                default: if(usr_input != "") Console.WriteLine("Command " + usr_input + " is not exists"); break;
+                default: if(input != "") Console.WriteLine("Command " + input + " is not exists"); break;
 
                 case "calc":
                     try
                     {
-                        var result = new Expression(usr_input.Split(' ').Skip(1).FirstOrDefault()).Evaluate();
+                        var result = new Expression(input.Split(' ').Skip(1).FirstOrDefault()).Evaluate();
                         Console.WriteLine(result);
                     }
                     catch
@@ -48,7 +48,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                 case "start":
                     try
                     {
-                        System.Diagnostics.Process.Start(usr_input.Split(' ').Skip(1).FirstOrDefault());
+                        System.Diagnostics.Process.Start(input.Split(' ').Skip(1).FirstOrDefault());
                     }
                     catch
                     {
@@ -59,19 +59,19 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                 case "ls":
                     try
                     {
-                        if (usr_input.Split(' ').Skip(1).FirstOrDefault() == "-a")
+                        if (input.Split(' ').Skip(1).FirstOrDefault() == "-a")
                         {
-                            DirectorySearch(usr_input.Split(' ').Skip(2).FirstOrDefault());
+                            DirectorySearch(input.Split(' ').Skip(2).FirstOrDefault());
                         }
-                        else if (usr_input.Split(' ').Skip(1).FirstOrDefault() == "-s")
+                        else if (input.Split(' ').Skip(1).FirstOrDefault() == "-s")
                         {
-                            if (usr_input.Split(' ').Skip(2).FirstOrDefault() == "" || usr_input.Split(' ').Skip(2).FirstOrDefault() == null)
+                            if (input.Split(' ').Skip(2).FirstOrDefault() == "" || input.Split(' ').Skip(2).FirstOrDefault() == null)
                             {
                                 Console.WriteLine("Type path to list all sub folders");
                             }
                             else
                             {
-                                string[] fileArray = Directory.GetDirectories(usr_input.Split(' ').Skip(2).FirstOrDefault());
+                                string[] fileArray = Directory.GetDirectories(input.Split(' ').Skip(2).FirstOrDefault());
 
                                 for (int i = 0; i < fileArray.Length; i++)
                                 {
@@ -81,6 +81,10 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                             }
 
                         }
+                        else
+                        {
+                            Console.WriteLine("parameter " + input.Split(' ').Skip(2).FirstOrDefault() + " was not found");
+                        }
                     }
                     catch
                     {
@@ -89,7 +93,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
 
                     break;
             }   
-            term_history += DateTime.Now.ToString("h:mm:ss tt")+ " " + usr_input + "\n";
+            term_history += DateTime.Now.ToString("h:mm:ss tt")+ " " + input + "\n";
         }
         public static void DirectorySearch(string dir)
         {
