@@ -8,6 +8,8 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
     {
         public static string term_history = "";
         public static string input = "";
+        public static string lastcd = "";
+        public static bool Islastcd = false;
         static void Main(string[] args)
         {
 
@@ -21,7 +23,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
         }
         static void Term()
         {
-            Console.Write(">>");
+            Console.Write(lastcd + ">>");
             input = Console.ReadLine();
 
             switch (input.Split(' ').FirstOrDefault().ToLower())
@@ -30,6 +32,50 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
 
                 case "file":
                     crowrfile(input.Split(' ').Skip(2).FirstOrDefault(), input.Split(' ').Skip(1).FirstOrDefault(), input.Split(' ').Skip(3).FirstOrDefault());
+                    break;
+
+                case "cd":
+                    Console.WriteLine(input.Split(' ').Skip(1).FirstOrDefault());
+                    if (input.Split(' ').Skip(1).FirstOrDefault() == null || input.Split(' ').Skip(1).FirstOrDefault() == "")
+                    {
+                        Islastcd = false;
+                        lastcd = "";
+                    }
+                    else
+                    {
+                        if (Islastcd)
+                        {
+                            if (Directory.Exists(lastcd + @"\" + input.Split(' ').Skip(1).FirstOrDefault()))
+                            {
+                                lastcd = lastcd += @"\" + input.Split(' ').Skip(1).FirstOrDefault();
+                                Islastcd = true;
+
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("wrong path");
+                            }
+                        }
+                        else if (!Islastcd)
+                        {
+                            if (Directory.Exists(input.Split(' ').Skip(1).FirstOrDefault()))
+                            {
+
+
+                                lastcd = input.Split(' ').Skip(1).FirstOrDefault() + @"\";
+                                Islastcd = true;
+
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("wrong path");
+                            }
+                        }
+
+                    }
+
                     break;
                 case "help":
 
@@ -65,7 +111,15 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
 
                     break;
                 case "echo":
-                    Console.WriteLine(input.Remove(0, 5));
+                    try
+                    {
+                        Console.WriteLine(input.Remove(0, 5));
+                    }
+                    catch (System.Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+
 
                     break;
             }
@@ -86,37 +140,140 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
         }
         private static void crowrfile(string path, string arg, string arg2)
         {
-            
+
             try
             {
-                
+
                 switch (arg)
                 {
                     default: Console.WriteLine("argument " + arg + " was not found"); break;
-                    case "-c": var c = System.IO.File.Create(path); c.Close(); break;
 
-                    case "-d":  System.IO.File.Delete(path); break;
+                    case "-c":
 
-                    case "-e":  System.IO.File.Encrypt(path); break;
+                        if (Islastcd)
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            var c = System.IO.File.Create(lastcd + @"\" + b); c.Close();
+                        }
+                        else
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            var c = System.IO.File.Create(b); c.Close();
+                        }
 
-                    case "-t": System.IO.File.Decrypt(path); break;
+                        break;
 
-                    case "-r": Console.WriteLine(System.IO.File.ReadAllText(path)); break;
+                    case "-d":
+                        if (Islastcd)
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            System.IO.File.Delete(lastcd + @"\" + b);
+
+                        }
+                        else
+                        {
+                            System.IO.File.Delete(path);
+                        }
+                        break;
+                    case "-e":
+                        if (Islastcd)
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            System.IO.File.Encrypt(lastcd + @"\" + b);
+
+                        }
+                        else
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            System.IO.File.Encrypt(b);
+                        }
+                        break;
+
+                    case "-t":
+                        if (Islastcd)
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            System.IO.File.Decrypt(lastcd + @"\" + b);
+
+                        }
+                        else
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            System.IO.File.Decrypt(b);
+                        }
+                        break;
+
+                    case "-r":
+                        if (Islastcd)
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            Console.WriteLine(System.IO.File.ReadAllText(lastcd + @"\" + b));
+
+
+                        }
+                        else
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            Console.WriteLine(System.IO.File.ReadAllText(b));
+                        }
+                        break;
 
                     case "-w":
-                        var a = input.Remove(0, input.IndexOf(arg2));
-                        System.IO.File.WriteAllText(path, a); break;
+                        if (Islastcd)
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            var bd = input.Remove(0, input.IndexOf(arg2));
+                            System.IO.File.WriteAllText(lastcd + @"\" + b, bd);
 
-                    case "-m":moveFile(path, arg2); break;
 
-                    case "-p":System.IO.File.Copy(path, arg2); break;
+                        }
+                        else
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            var bd = input.Remove(0, input.IndexOf(arg2));
+                            System.IO.File.WriteAllText(b, bd);
+
+
+                        }
+                        break;
+
+                    case "-m":
+                        if (Islastcd)
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            var bd = input.Remove(0, input.IndexOf(arg2));
+                            moveFile(lastcd + @"\" + b, bd);
+
+                        }
+                        else
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            var bd = input.Remove(0, input.IndexOf(arg2));
+                            moveFile(b, bd);
+                        }
+                        break;
+
+                    case "-p":
+                        if (Islastcd)
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            System.IO.File.Copy(lastcd + @"\" + b, input.Remove(0, input.IndexOf(arg2)));
+                        }
+                        else
+                        {
+                            var b = input.Remove(0, input.IndexOf(arg) + 3);
+                            System.IO.File.Copy(b, input.Remove(0, input.IndexOf(arg2)));
+                        }
+
+
+                        break;
 
 
                 }
 
-                
+
             }
-            catch(System.Exception e)
+            catch (System.Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -156,7 +313,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
             System.IO.File.Delete(arg1);
 
         }
-        private static void showhistory(){if (term_history != "") Console.WriteLine("Your terminal session history: \n" + term_history);}
+        private static void showhistory() { if (term_history != "") Console.WriteLine("Your terminal session history: \n" + term_history); }
 
         private static void clear()
         {
@@ -206,41 +363,68 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
         {
             try
             {
-                if (input.Split(' ').Skip(1).FirstOrDefault() == "-a")
+                if (Islastcd)
                 {
-                    if (input.Split(' ').Skip(2).FirstOrDefault() == "" || input.Split(' ').Skip(2).FirstOrDefault() == null)
+                    if (input.Split(' ').Skip(1).FirstOrDefault() == "-a")
                     {
-                        Console.WriteLine("Type path to list all files");
-                    }
-                    else
-                    {
-                        DirectorySearch(input.Split(' ').Skip(2).FirstOrDefault());
-                    }
+                        DirectorySearch(lastcd);
 
-                }
-                else if (input.Split(' ').Skip(1).FirstOrDefault() == "-s")
-                {
-                    if (input.Split(' ').Skip(2).FirstOrDefault() == "" || input.Split(' ').Skip(2).FirstOrDefault() == null)
-                    {
-                        Console.WriteLine("Type path to list all sub folders");
                     }
-                    else
+                    else if (input.Split(' ').Skip(1).FirstOrDefault() == "-s")
                     {
-                        string[] fileArray = Directory.GetDirectories(input.Split(' ').Skip(2).FirstOrDefault());
+                        string[] fileArray = Directory.GetDirectories(lastcd);
 
                         for (int i = 0; i < fileArray.Length; i++)
                         {
 
                             Console.WriteLine(fileArray[i]);
                         }
-                    }
 
+                    }
+                    else
+                    {
+                        Console.WriteLine("argument " + input.Split(' ').Skip(1).FirstOrDefault() + " was not found");
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("argument " + input.Split(' ').Skip(1).FirstOrDefault() + " was not found");
+                    if (input.Split(' ').Skip(1).FirstOrDefault() == "-a")
+                    {
+                        if (input.Split(' ').Skip(2).FirstOrDefault() == "" || input.Split(' ').Skip(2).FirstOrDefault() == null)
+                        {
+                            Console.WriteLine("Type path to list all files");
+                        }
+                        else
+                        {
+                            DirectorySearch(input.Split(' ').Skip(2).FirstOrDefault());
+                        }
+
+                    }
+                    else if (input.Split(' ').Skip(1).FirstOrDefault() == "-s")
+                    {
+                        if (input.Split(' ').Skip(2).FirstOrDefault() == "" || input.Split(' ').Skip(2).FirstOrDefault() == null)
+                        {
+                            Console.WriteLine("Type path to list all sub folders");
+                        }
+                        else
+                        {
+                            string[] fileArray = Directory.GetDirectories(input.Split(' ').Skip(2).FirstOrDefault());
+
+                            for (int i = 0; i < fileArray.Length; i++)
+                            {
+
+                                Console.WriteLine(fileArray[i]);
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("argument " + input.Split(' ').Skip(1).FirstOrDefault() + " was not found");
+                    }
                 }
             }
+
             catch (System.Exception ex)
             {
                 Console.WriteLine(ex.Message);
