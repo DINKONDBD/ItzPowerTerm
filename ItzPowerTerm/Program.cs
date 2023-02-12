@@ -12,7 +12,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
         {
 
             //var secondWord = str.Split(' ').Skip(1).FirstOrDefault();
-            Console.WriteLine("ItzPowerTerm v0.1 by DINKONDBD (dinkondbd.github.io)");
+            Console.WriteLine("ItzPowerTerm v0.2 by DINKONDBD (dinkondbd.github.io)");
             string usr_input = "";
             while (usr_input != "exit")
             {
@@ -64,6 +64,10 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                     ls();
 
                     break;
+                case "echo":
+                    Console.WriteLine(input.Remove(0, 5));
+
+                    break;
             }
             term_history += DateTime.Now.ToString("h:mm:ss tt") + " " + input + "\n";
         }
@@ -99,7 +103,9 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
 
                     case "-r": Console.WriteLine(System.IO.File.ReadAllText(path)); break;
 
-                    case "-w":System.IO.File.WriteAllText(path, arg2); break;
+                    case "-w":
+                        var a = input.Remove(0, input.IndexOf(arg2));
+                        System.IO.File.WriteAllText(path, a); break;
 
                     case "-m":moveFile(path, arg2); break;
 
@@ -133,9 +139,10 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                     "\n -e encrypts file" +
                     "\n -t decrypts file" +
                     "\n -r reads all text from file " +
-                    "\n -w writes word to file" +
+                    "\n -w writes text to file" +
                     "\n -m moves file" +
-                    "\n -p copies file\n");
+                    "\n -p copies file\n" +
+                    "\n echo shows text [1 arg] (example echo hello world)");
             }
             catch (System.Exception ex)
             {
