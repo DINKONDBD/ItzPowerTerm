@@ -6,6 +6,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
 {
     internal class Program
     {
+        private static string b;
         public static string term_history = "";
         public static string input = "";
         static void Main(string[] args)
@@ -28,9 +29,13 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
             {
                 default: if (input != "") Console.WriteLine("Command " + input + " is not exists"); break;
 
+                case "file":
+                    crowrfile(input.Split(' ').Skip(2).FirstOrDefault(), input.Split(' ').Skip(1).FirstOrDefault(), input.Split(' ').Skip(3).FirstOrDefault());
+                    break;
                 case "help":
 
                     showHelp();
+
                     break;
 
                 case "calc":
@@ -76,21 +81,74 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                 Console.WriteLine(ex.Message);
             }
         }
+        private static void crowrfile(string path, string arg, string arg2)
+        {
+            
+            try
+            {
+                
+                switch (arg)
+                {
+                    default: Console.WriteLine("argument " + arg + " was not found"); break;
+                    case "-c": var c = System.IO.File.Create(path); c.Close(); break;
+
+                    case "-d":  System.IO.File.Delete(path); break;
+
+                    case "-e":  System.IO.File.Encrypt(path); break;
+
+                    case "-t": System.IO.File.Decrypt(path); break;
+
+                    case "-r": Console.WriteLine(System.IO.File.ReadAllText(path)); break;
+
+                    case "-w":System.IO.File.WriteAllText(path, arg2); break;
+
+                    case "-m":moveFile(path, arg2); break;
+
+                    case "-p":System.IO.File.Copy(path, arg2); break;
+
+
+                }
+
+                
+            }
+            catch(System.Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
         private static void showHelp()
         {
             try
             {
                 Console.WriteLine("Commands:" +
-                    "\n calc - Shows output evaluation of argument [1 args]" +
-                    "\n clear - clears console [0 args]" +
-                    "\n history - shows current terminal session history [0 args]" +
-                    "\n ls - shows subfolders or all files [2 args] arg -s show all subfolders -a shows all files (requires to type path) (example ls -a C:/) " +
-                    "\n start - starts file or program from argument [1 args]");
+                    "\n calc - Shows output evaluation of argument [1 args] \n" +
+                    "\n clear - clears console [0 args]\n" +
+                    "\n history - shows current terminal session history [0 args]\n" +
+                    "\n ls - shows subfolders or all files [2 args]:" +
+                    "\n -s show all subfolders" +
+                    "\n -a shows all files (requires to type path) (example ls -a C:/)\n " +
+                    "\n start - starts file or program from argument [1 args]\n" +
+                    "\n file - does file manipulation [8 args]:" +
+                    "\n -c creates file" +
+                    "\n -d deletes file" +
+                    "\n -e encrypts file" +
+                    "\n -t decrypts file" +
+                    "\n -r reads all text from file " +
+                    "\n -w writes word to file" +
+                    "\n -m moves file" +
+                    "\n -p copies file\n");
             }
             catch (System.Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private static void moveFile(string arg1, string arg2)
+        {
+            System.IO.File.Copy(arg1, arg2);
+            System.IO.File.Delete(arg1);
+
         }
         private static void showhistory(){if (term_history != "") Console.WriteLine("Your terminal session history: \n" + term_history);}
 
@@ -174,7 +232,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                 }
                 else
                 {
-                    Console.WriteLine("parameter " + input.Split(' ').Skip(1).FirstOrDefault() + " was not found");
+                    Console.WriteLine("argument " + input.Split(' ').Skip(1).FirstOrDefault() + " was not found");
                 }
             }
             catch (System.Exception ex)
