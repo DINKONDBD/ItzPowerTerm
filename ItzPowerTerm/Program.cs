@@ -6,7 +6,6 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
 {
     internal class Program
     {
-        private static string b;
         public static string term_history = "";
         public static string input = "";
         static void Main(string[] args)
