@@ -1,6 +1,4 @@
-﻿using System;
-using NCalc;
-using System.Diagnostics;
+﻿using NCalc;
 
 namespace ItzPowerTerm // Note: actual namespace depends on the project name.
 {
@@ -15,8 +13,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
 
             //var secondWord = str.Split(' ').Skip(1).FirstOrDefault();
             Console.WriteLine("ItzPowerTerm v0.2 by DINKONDBD (dinkondbd.github.io)");
-            string usr_input = "";
-            while (usr_input != "exit")
+            while (input != "exit")
             {
                 Term();
             }
@@ -35,8 +32,9 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                     break;
 
                 case "cd":
+                    string a = input.Replace("/", @"\");
                     Console.WriteLine(input.Split(' ').Skip(1).FirstOrDefault());
-                    if (input.Split(' ').Skip(1).FirstOrDefault() == null || input.Split(' ').Skip(1).FirstOrDefault() == "")
+                    if (a.Split(' ').Skip(1).FirstOrDefault() == null || a.Split(' ').Skip(1).FirstOrDefault() == "")
                     {
                         Islastcd = false;
                         lastcd = "";
@@ -45,9 +43,9 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                     {
                         if (Islastcd)
                         {
-                            if (Directory.Exists(lastcd + @"\" + input.Split(' ').Skip(1).FirstOrDefault()))
+                            if (Directory.Exists(lastcd + @"\" + a.Split(' ').Skip(1).FirstOrDefault()))
                             {
-                                lastcd = lastcd += @"\" + input.Split(' ').Skip(1).FirstOrDefault();
+                                lastcd = lastcd += @"\" + a.Split(' ').Skip(1).FirstOrDefault();
                                 Islastcd = true;
 
 
@@ -59,11 +57,11 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                         }
                         else if (!Islastcd)
                         {
-                            if (Directory.Exists(input.Split(' ').Skip(1).FirstOrDefault()))
+                            if (Directory.Exists(a.Split(' ').Skip(1).FirstOrDefault()))
                             {
 
 
-                                lastcd = input.Split(' ').Skip(1).FirstOrDefault() + @"\";
+                                lastcd = a.Split(' ').Skip(1).FirstOrDefault() + @"\";
                                 Islastcd = true;
 
 
@@ -75,6 +73,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
                         }
 
                     }
+                    
 
                     break;
                 case "help":
