@@ -1,5 +1,7 @@
 ﻿using NCalc;
-
+#pragma warning disable CS8601 
+#pragma warning disable CS8602
+#pragma warning disable CS8604
 namespace ItzPowerTerm // Note: actual namespace depends on the project name.
 {
     internal class Program
@@ -21,6 +23,7 @@ namespace ItzPowerTerm // Note: actual namespace depends on the project name.
         static void Term()
         {
             Console.Write(lastcd + ">>");
+                            
             input = Console.ReadLine();
 
             switch (input.Split(' ').FirstOrDefault().ToLower())
